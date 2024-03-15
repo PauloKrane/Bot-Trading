@@ -1,0 +1,34 @@
+El DataFrame periodo_btc_usdt contiene datos históricos de precios de Bitcoin (BTC) en relación con el dólar estadounidense (USD) durante el período desde el 1 de febrero de 2024 hasta el 11 de marzo de 2024, con un intervalo de muestreo de 5 minutos1. Los datos incluyen las siguientes columnas:
+
+Fecha (Date): La fecha y hora de cada punto de datos.
+Precio de apertura (Open): El precio de apertura de BTC-USD en ese intervalo de tiempo.
+Precio máximo (High): El precio más alto alcanzado durante ese intervalo.
+Precio mínimo (Low): El precio más bajo alcanzado durante ese intervalo.
+Precio de cierre ajustado (Adj Close): El precio de cierre ajustado para tener en cuenta eventos como dividendos o divisiones de acciones.
+Volumen de negociación (Volume): La cantidad total de BTC negociada durante ese intervalo.
+
+ej: 
+#   Column     Non-Null Count  Dtype  
+---  ------     --------------  -----  
+ 0   Open       2880 non-null   float64
+ 1   High       2880 non-null   float64
+ 2   Low        2880 non-null   float64
+ 3   Close      2880 non-null   float64
+ 4   Adj Close  2880 non-null   float64
+ 5   Volume     2880 non-null   int64 
+
+Estrategia:
+1) señal de compra = corte ascendente de ema 9 a la de 300
+2) tomar puntos mas alto (h) previo al corte descendente  de la ema de 9 a 300
+3) tomar punto minimo (l) previo al corte ascendente de la ema de 9 a 300
+4) tomar punto de cierre del minimo (c) previo al corte ascendente de la ema de 9 a 300
+5) valor punto pivote es el stop
+6) calcular el porcentaje del punto minimo (stop) al punto de señal de compra
+7) profit= distancia desde punto de stop hasta el punto de señal de compra
+
+formula:
+    temporization: 5 min
+    señal de compra: ema 9 < ema 300 
+                     ema 9 > ema 300  
+
+    señal de venta: 
