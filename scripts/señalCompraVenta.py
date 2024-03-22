@@ -1,6 +1,7 @@
 import talib as ta
 import matplotlib.pyplot as plt
 import yfinance as yf
+import pandas as pd
 
 #Gráfico Bayesian methods for hackers style sheet
 plt.style.use('bmh')
@@ -36,26 +37,24 @@ crossings_ascendentes = (ema_min > ema_max) & (ema_min.shift(1) < ema_max.shift(
 
 # Detectar puntos mínimo entre A Y B (punto "c")
 """
-# Iterar sobre los datos de las EMAs (excepto el primer punto, ya que no tiene un punto anterior)
-for i in range(1, len(ema_min)):
-    if (ema_min < ema_max) & ema_min.shift(1)[i] < ema_max.shift(1)[i]:  
-        punto_C_precio = data.index[i].Close
-"""
-
-# Obtener fechas de intersecciones
-intersection_dates = data.index[crossings_ascendentes]
-intersection_dates_A = data.index[crossings_descendentes]
-
+#precio_minimo = data.loc[puntos_descendentes.index[0]:puntos_ascendentes.index[0], 'Close'].min() # Encontrar el precio mínimo entre los puntos de cruce descendentes y ascendentes
+indice_precio_minimo = data.loc[crossings_descendentes | crossings_ascendentes, 'Close'].idxmin()
+# Obtener la fecha correspondiente al índice del mínimo precio
+fecha_minimo = data.loc[indice_precio_minimo]
+# Obtener el precio mínimo
+precio_minimo = data.loc[indice_precio_minimo, 'Close']
+ """ 
 # Crear el gráfico
 plt.figure(figsize=(10, 5))
 plt.plot(data.index, data['Close'], label='Precio de cierre', color='brown')
 plt.plot(ema_min.index, ema_min, label= 'EMA (' + str(EMA_MIN) + ' días)', color='purple', linestyle='--')
 plt.plot(ema_max.index, ema_max, label= 'EMA (' + str(EMA_MAX) + ' días)', color='blue', linestyle='--')
-plt.scatter(intersection_dates, data.loc[intersection_dates]['Close'], marker='o', color='green', label='punto B (compra)')
-plt.scatter(intersection_dates_A, data.loc[intersection_dates_A]['Close'], marker='o', color='red', label='puto A')
+plt.scatter(crossings_ascendentes.index, data.loc[crossings_ascendentes]['Close'], marker='o', color='green', label='Punto B (compra)')
+plt.scatter(icrossings_descendentes.index, data.loc[crossings_descendentes]['Close'], marker='o', color='red', label='Punto A')
 plt.title('Gráfico de Precios y EMAs con Intersecciones')
 plt.xlabel('Fecha')
 plt.ylabel('Precio')
 plt.legend()
 plt.grid(True)
 plt.show()
+
