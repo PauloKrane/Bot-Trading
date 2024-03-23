@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import yfinance as yf
 import pandas as pd
 import configuracion as cf
+import mis_funciones as mf
 
 #Configuración 
 CRYPTO = cf.CRYPTO 
@@ -34,10 +35,10 @@ a_cruces_descendentes= (ema_corta < ema_larga) & (ema_corta.shift(1) > ema_larga
 b_cruces_ascendentes = (ema_corta > ema_larga) & (ema_corta.shift(1) < ema_larga.shift(1))
 
 # Detectar puntos C entre A Y B (stop_loss)
-stop_loss = cf.obtener_stop_loss(precios_cierre, a_cruces_descendentes, b_cruces_ascendentes)
+stop_loss = mf.obtener_stop_loss(precios_cierre, a_cruces_descendentes, b_cruces_ascendentes)
 
 # Detectar puntos D (take_profit)
-take_profit = cf.obtener_take_profit(precios_cierre, a_cruces_descendentes, b_cruces_ascendentes)
+take_profit = mf.obtener_take_profit(precios_cierre, a_cruces_descendentes, b_cruces_ascendentes)
 
 #Crear el gráfico
 plt.figure(figsize=(10, 5))
